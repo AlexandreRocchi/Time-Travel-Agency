@@ -34,7 +34,7 @@ Webapp pour une agence de voyage temporel fictive, créée avec IA générative.
 ### Installation locale
 ```bash
 # Cloner le projet
-git clone <repo-url>
+git clone [<repo-url>](https://github.com/AlexandreRocchi/Time-Travel-Agency)
 
 # Installer les dépendances
 npm install
