@@ -7,7 +7,7 @@ export const DESTINATIONS: Destination[] = [
     era: 'Révolution Industrielle',
     year: '1889',
     description: "Assistez à l'inauguration de la Tour Eiffel lors de l'Exposition Universelle. Vivez l'effervescence du Paris de la Belle Époque.",
-    imageUrl: 'https://images.unsplash.com/photo-1543349689-9a4d426bee8e?q=80&w=2001&auto=format&fit=crop',
+    imageUrl: '/img/image_hero_paris.jpg',
     price: '2 500 000 ₮',
     features: ['Accès VIP Tour Eiffel', 'Dîner au Moulin Rouge', 'Costumes d\'époque inclus']
   },
@@ -17,7 +17,7 @@ export const DESTINATIONS: Destination[] = [
     era: 'Crétacé Supérieur',
     year: '-66M',
     description: "Une expédition safari sans précédent au milieu des titans. Observez le Tyrannosaurus Rex dans son habitat naturel en toute sécurité.",
-    imageUrl: 'https://images.unsplash.com/photo-1519810755548-39211617a84c?q=80&w=2742&auto=format&fit=crop', // Jungle vibes placeholder
+    imageUrl: '/img/image_hero_cretace.jpg',
     price: '4 800 000 ₮',
     features: ['Bulle de protection temporelle', 'Guide paléontologue certifié', 'Assurance vie premium']
   },
@@ -27,7 +27,7 @@ export const DESTINATIONS: Destination[] = [
     era: 'Renaissance Italienne',
     year: '1504',
     description: "Rencontrez les maîtres Michel-Ange et Léonard de Vinci. Flânez sur le Ponte Vecchio et découvrez les secrets des Médicis.",
-    imageUrl: 'https://images.unsplash.com/photo-1543997762-2b2174661875?q=80&w=1974&auto=format&fit=crop',
+    imageUrl: '/img/image_hero_florence.jpg',
     price: '3 200 000 ₮',
     features: ['Atelier privé avec un maître', 'Visite du Palazzo Vecchio', 'Dégustation vins toscans']
   }

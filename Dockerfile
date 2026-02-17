@@ -12,6 +12,9 @@ RUN npm install
 # Copier le reste du code
 COPY . .
 
+# S'assurer que le dossier public existe
+RUN mkdir -p public
+
 # Définir les variables d'environnement pour le build
 ARG VITE_OPENROUTER_API_KEY
 ENV VITE_OPENROUTER_API_KEY=$VITE_OPENROUTER_API_KEY
@@ -33,6 +36,7 @@ RUN npm install
 # Copier les fichiers buildés depuis l'étape de build
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/vite.config.ts ./vite.config.ts
+COPY --from=builder /app/public ./public
 
 # Exposer le port
 EXPOSE 3000
