@@ -81,7 +81,7 @@ class OpenRouterService {
   private apiKey: string;
   private conversationHistory: Message[] = [];
   private readonly apiUrl = 'https://openrouter.ai/api/v1/chat/completions';
-  private readonly model = 'openrouter/aurora-alpha'; // Modèle Aurora Alpha
+  private readonly model = 'stepfun/step-3.5-flash:free'; // Modèle StepFun gratuit
 
   constructor(apiKey: string) {
     this.apiKey = apiKey;
@@ -94,6 +94,9 @@ class OpenRouterService {
 
   async sendMessage(userMessage: string): Promise<string> {
     try {
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/efae9d3d-d10a-4e9f-aaaf-3ebf23b7d8ee',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'openRouterService.ts:96',message:'sendMessage method called',data:{apiKeyPrefix:this.apiKey.substring(0,10),model:this.model,historyLength:this.conversationHistory.length},timestamp:Date.now(),hypothesisId:'A'})}).catch(()=>{});
+      // #endregion
       // Ajouter le message de l'utilisateur à l'historique
       this.conversationHistory.push({
         role: 'user',
@@ -118,15 +121,29 @@ class OpenRouterService {
         })
       });
 
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/efae9d3d-d10a-4e9f-aaaf-3ebf23b7d8ee',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'openRouterService.ts:120',message:'API response received',data:{status:response.status,ok:response.ok,statusText:response.statusText},timestamp:Date.now(),hypothesisId:'B'})}).catch(()=>{});
+      // #endregion
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/efae9d3d-d10a-4e9f-aaaf-3ebf23b7d8ee',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'openRouterService.ts:124',message:'API error response',data:{status:response.status,errorData:errorData},timestamp:Date.now(),hypothesisId:'B'})}).catch(()=>{});
+        // #endregion
         console.error('OpenRouter API Error:', errorData);
         throw new Error(`API Error: ${response.status}`);
       }
 
       const data: OpenRouterResponse = await response.json();
       
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/efae9d3d-d10a-4e9f-aaaf-3ebf23b7d8ee',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'openRouterService.ts:127',message:'API response parsed',data:{hasChoices:!!data.choices,choicesLength:data.choices?.length||0,model:data.model,fullResponse:data},timestamp:Date.now(),hypothesisId:'C'})}).catch(()=>{});
+      // #endregion
+      
       if (!data.choices || data.choices.length === 0) {
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/efae9d3d-d10a-4e9f-aaaf-3ebf23b7d8ee',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'openRouterService.ts:132',message:'No choices in response',data:{fullData:data},timestamp:Date.now(),hypothesisId:'C'})}).catch(()=>{});
+        // #endregion
         throw new Error('No response from API');
       }
 
@@ -149,6 +166,9 @@ class OpenRouterService {
       return assistantMessage;
 
     } catch (error) {
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/efae9d3d-d10a-4e9f-aaaf-3ebf23b7d8ee',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'openRouterService.ts:154',message:'Error caught in sendMessage',data:{errorType:error?.constructor?.name,errorMessage:error instanceof Error?error.message:'unknown',isTypeError:error instanceof TypeError,fullError:JSON.stringify(error,Object.getOwnPropertyNames(error))},timestamp:Date.now(),hypothesisId:'D'})}).catch(()=>{});
+      // #endregion
       console.error('Error in OpenRouter service:', error);
       
       // Messages d'erreur thématiques
@@ -189,9 +209,15 @@ export const getOpenRouterInstance = (): OpenRouterService | null => {
 };
 
 export const sendMessageToOpenRouter = async (message: string): Promise<string> => {
+  // #region agent log
+  fetch('http://127.0.0.1:7242/ingest/efae9d3d-d10a-4e9f-aaaf-3ebf23b7d8ee',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'openRouterService.ts:192',message:'sendMessageToOpenRouter called',data:{messageLength:message.length,envVarExists:!!import.meta.env.VITE_OPENROUTER_API_KEY,envVarValue:import.meta.env.VITE_OPENROUTER_API_KEY?.substring(0,10)+'...'},timestamp:Date.now(),hypothesisId:'E'})}).catch(()=>{});
+  // #endregion
   const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY || '';
   
   if (!apiKey) {
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/efae9d3d-d10a-4e9f-aaaf-3ebf23b7d8ee',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'openRouterService.ts:195',message:'API Key missing',data:{},timestamp:Date.now(),hypothesisId:'E'})}).catch(()=>{});
+    // #endregion
     return "Désolé, mes circuits temporels sont actuellement hors ligne. (Clé API OpenRouter manquante)";
   }
 
